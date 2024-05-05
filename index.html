@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="stylesheet" href="./style.css" />
+      <link
+         rel="stylesheet"
+         href="https://fonts.googleapis.com/css2?family=Avenir:wght@400;700&display=swap"
+      />
+      <title>Find characters</title>
+   </head>
+   <body>
+      <div class="box">
+         <div class="container">
+            <div class="search-box">
+               <div class="search-container">
+                  <input
+                     type="text"
+                     placeholder="Search a character"
+                     id="searchBar"
+                     name="searchBar"
+                  />
+                  <button id="search-btn" onclick="search()">Search</button>
+               </div>
+            </div>
+            <div id="characters-container"></div>
+
+            <div class="pagination-container">
+               <div id="pagination"></div>
+            </div>
+
+            <div id="popup-container">
+               <div id="popup1" class="overlay"></div>
+            </div>
+         </div>
+      </div>
+
+      <script src="./script.js"></script>
+   </body>
+</html>
