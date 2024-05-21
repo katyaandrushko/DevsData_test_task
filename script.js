@@ -15,10 +15,19 @@ const listAllCharacters = async () => {
    listCharachters(char)
 }
 
+let pagesCount = 1
+
 const searchCharacters = async (searchWord) => {
    const response = await fetch(allCharacters + 'people/?search=' + searchWord)
    let searchResult = await response.json()
-   listCharachters(searchResult)
+   if (searchResult.count == 0) {
+      const characters = document.getElementById('characters-container')
+      characters.innerHTML = ''
+      const character = document.getElementById('characters-container-not')
+      character.innerHTML = `<h3 id='not-found'> Character not found </h3>`
+   } else {
+      listCharachters(searchResult)
+   }
 }
 
 const closePopup = () => {
@@ -76,7 +85,7 @@ const listCharachters = async (char) => {
          document
             .getElementById('toggle-hidden')
             .addEventListener('click', function () {
-               var hiddenContent = document.getElementById('hidden-content')
+               let hiddenContent = document.getElementById('hidden-content')
                if (hiddenContent.style.display === 'none') {
                   hiddenContent.style.display = 'block'
                } else {
@@ -87,12 +96,19 @@ const listCharachters = async (char) => {
 
       async function insertComplexData() {
          let result = '<h3> <b> Films: </b> </h3>'
-         for (let film of el.films) {
-            let filmInfo = await getInfoFromApi(film)
-            result += `<h3>${filmInfo.title}</h3>`
+         if (el.films.length != 0) {
+            for (let film of el.films) {
+               let filmInfo = await getInfoFromApi(film)
+               result += `<h3>${filmInfo.title}</h3>`
+            }
+         } else {
+            return 'Films not found'
          }
 
          result += '<h3> <b> Species: </b> </h3> '
+         if (el.species == undefined || el.species.length == 0) {
+            result += `<h3> Species not found </h3>`
+         }
          for (let specie of el.species) {
             let specieInfo = await getInfoFromApi(specie)
             result += `<h3>${specieInfo.name}</h3>`
@@ -116,26 +132,60 @@ const listCharachters = async (char) => {
       characters.appendChild(charDiv)
    }
 
-   let pagesCount = Math.ceil(char.count / 10)
+   pagesCount = Math.ceil(char.count / 10)
+}
 
-   const pagination = document.getElementById('pagination')
-   pagination.innerHTML = ''
+async function insertPagination() {
+   setTimeout(() => {
+      const pagination = document.getElementById('pagination')
+      pagination.innerHTML = ''
 
-   let prev = document.createElement('a')
-   prev.innerHTML = '&laquo;'
-   pagination.appendChild(prev)
-   for (let i = 1; i <= pagesCount; i++) {
-      let pageLink = document.createElement('a')
-      pageLink.textContent = i
-      pageLink.addEventListener('click', () => {
-         currentPage = i
+      let prev = document.createElement('a')
+      prev.innerHTML = '&laquo;'
+      prev.addEventListener('click', () => {
+         currentPage--
+         if (currentPage < 1) currentPage = 1
+         updatePagination()
          listAllCharacters()
       })
-      pagination.appendChild(pageLink)
-   }
-   let next = document.createElement('a')
-   next.innerHTML = '&raquo;'
-   pagination.appendChild(next)
+      pagination.appendChild(prev)
+
+      for (let i = 1; i <= pagesCount; i++) {
+         let pageLink = document.createElement('a')
+         pageLink.textContent = i
+
+         pageLink.addEventListener('click', () => {
+            currentPage = i
+            updatePagination()
+            listAllCharacters()
+         })
+
+         pagination.appendChild(pageLink)
+      }
+      let next = document.createElement('a')
+      next.innerHTML = '&raquo;'
+
+      next.addEventListener('click', () => {
+         currentPage++
+         if (currentPage > pagesCount) currentPage = pagesCount
+         updatePagination()
+         listAllCharacters()
+      })
+      pagination.appendChild(next)
+
+      updatePagination()
+   }, '1500')
+}
+
+function updatePagination() {
+   let allPageLinks = document.querySelectorAll('#pagination a')
+   allPageLinks.forEach((link) => link.classList.remove('active'))
+
+   let currentLink = document.querySelector(
+      `#pagination a:nth-child(${currentPage + 1})`
+   )
+   currentLink.classList.add('active')
 }
 
 listAllCharacters()
+insertPagination()

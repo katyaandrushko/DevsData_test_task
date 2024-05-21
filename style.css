@@ -11,20 +11,15 @@ body {
 
 .box {
    display: flex;
-   align-items: center;
-   justify-content: space-around;
 }
 
 .container {
    margin: 0 auto;
-   max-width: 1240px;
    margin-top: 70px;
 }
 
 .search-box {
    font-size: 16px;
-   width: 90vw;
-   max-width: 37.5em;
    background-color: #201f28;
    border-radius: 0.6em;
    box-shadow: 1.2em 2em 3em rgba(0, 0, 0, 0.2);
@@ -40,7 +35,6 @@ body {
 .search-container input,
 .search-container button {
    font-size: 0.9em;
-   outline: none;
    border-radius: 0.3em;
 }
 
@@ -60,13 +54,29 @@ body {
    border: none;
 }
 
+.search-container button:hover {
+   background-color: #d8caac;
+}
+
 #characters-container {
    display: grid;
-   grid-template-columns: repeat(2, minmax(0, 1fr));
+   grid-template-columns: repeat(2, 1fr);
    gap: 1rem;
    padding-top: 1.5rem;
    justify-items: center;
    align-items: center;
+}
+
+#characters-container-not {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+#not-found {
+   font-size: 20px;
+   padding-top: 30px;
+   color: rgb(217, 213, 213);
 }
 
 .character1 {
@@ -96,10 +106,10 @@ body {
    align-items: center;
    justify-content: center;
    margin: 3rem;
+   padding-top: 30px;
 }
 
 #pagination {
-   display: inline-block;
    display: flex;
    gap: 7px;
 }
@@ -115,7 +125,7 @@ body {
    line-height: 10px;
    margin: 0 2px;
    background-color: #4a4a4a;
-   border-radius: 2pxrgb (197, 179, 142);
+   border-radius: 2px rgb(197, 179, 142);
    align-items: center;
    justify-content: center;
    display: flex;
@@ -123,6 +133,11 @@ body {
 
 #pagination a:hover {
    background-color: #ccc;
+}
+
+.active {
+   background-color: rgb(217, 213, 213) !important;
+   color: black !important;
 }
 
 /* POPUP */
